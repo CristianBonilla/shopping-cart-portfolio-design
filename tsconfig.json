@@ -16,11 +16,18 @@
       "node_modules/@types"
     ],
     "types": [
+      "node",
       "webpack-env"
     ],
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@layout/*": [
+        "src/layout/*"
+      ],
+      "@views/*": [
+        "src/views/*"
       ]
     },
     "lib": [

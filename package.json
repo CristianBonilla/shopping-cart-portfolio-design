@@ -1,6 +1,6 @@
 {
   "name": "shopping-cart-portfolio-design",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "private": false,
   "scripts": {
@@ -33,6 +33,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
+    "tsconfig-paths-webpack-plugin": "^3.5.1",
     "typescript": "~4.1.5",
     "vue-template-compiler": "^2.6.11"
   }
