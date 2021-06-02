@@ -2,7 +2,11 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 
-declare const process: { env: { BASE_URL: string } };
+declare const process: {
+  env: {
+    BASE_URL: string;
+  };
+};
 
 Vue.use(VueRouter);
 

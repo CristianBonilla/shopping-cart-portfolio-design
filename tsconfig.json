@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "ESNext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
@@ -12,6 +12,9 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "types": [
       "webpack-env"
     ],
@@ -21,10 +24,10 @@
       ]
     },
     "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
+      "ESNext",
+      "DOM",
+      "DOM.Iterable",
+      "ScriptHost"
     ]
   },
   "include": [

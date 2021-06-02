@@ -1,0 +1,57 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+  font-family: @font-proximanova-r, @font-sans-serif;
+  font-size: @text-size;
+  line-height: @text-line-height;
+  color: @text-color;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+a,
+button,
+input,
+textarea,
+main,
+section {
+  outline: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
+
+a,
+button {
+  text-decoration: none;
+  border: 0;
+}
+
+.wrapper {
+  position: relative;
+  top: 0;
+  min-height: 100vh;
+  height: auto;
+  // padding-bottom: 364.63px;
+  margin: 0;
+}
+
+@media (min-width: 361px) {
+  // .wrapper {
+  //   padding-bottom: 166.44px;
+  // }
+}

@@ -1,13 +1,12 @@
 import Vue, { ComponentOptions } from 'vue';
-import App from './App.vue';
-import router from './router';
+import App from '@/App.vue';
+import router from '@/router';
 
 Vue.config.productionTip = false;
 
 const options: ComponentOptions<Vue> = {
-  render: createElement => createElement(App),
+  render: rootElement => rootElement(App),
   router
 };
 
-new Vue(options)
-  .$mount('#app');
+new Vue(options).$mount('#app');
