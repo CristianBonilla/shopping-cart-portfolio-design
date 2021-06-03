@@ -19,7 +19,8 @@ module.exports = {
     indent: [
       'warn',
       2
-    ]
+    ],
+    'array-bracket-spacing': [ 'warn', 'always' ]
   },
   overrides: [
     {
