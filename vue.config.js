@@ -1,6 +1,16 @@
+/**
+ * @typedef { import('@vue/cli-service').ProjectOptions } Config
+ * @typedef { [
+ *    {
+ *      title: string;
+ *    }, ...unknown[]
+ * ]
+ * } HtmlConfig */
+
 const path = require('path');
 const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
 
+/** @param source { string } */
 const dir = source => path.resolve(__dirname, source);
 const paths = {
   root: dir('./'),
@@ -8,17 +18,23 @@ const paths = {
   dist: dir('./dist')
 };
 
-module.exports = {
+/** @type { Config } */
+const config = {
   devServer: {
     port: 11880
   },
-  chainWebpack: config => {
+  chainWebpack(config) {
     config.entry('app').clear();
     config.entry('app')
       .add(path.resolve(paths.src, 'main.ts'))
       .add(path.resolve(paths.src, 'styles/base/normalize.less'))
       .add(path.resolve(paths.src, 'styles/main.less'))
       .end();
+    config.resolve.alias.delete('@');
+    config.resolve.alias
+      .set('@fonts', path.resolve(paths.src, 'assets/fonts'))
+      .set('@images', path.resolve(paths.src, 'assets/images'))
+      .set('@styles', path.resolve(paths.src, 'styles'));
     const tsConfigPathsPlugin = new TsconfigPathsPlugin({
       extensions: [
         '.ts',
@@ -27,7 +43,6 @@ module.exports = {
       ],
       configFile: path.resolve(paths.root, 'tsconfig.json')
     });
-    config.resolve.alias.delete('@');
     config.resolve.plugin('tsconfig-paths')
       .use(tsConfigPathsPlugin);
     config.plugin('html')
@@ -37,5 +52,14 @@ module.exports = {
 
         return htmlConfig;
       });
-  }
+  },
+  configureWebpack(config) {
+    config.devtool = 'source-map';
+  },
+  css: {
+    sourceMap: true
+  },
+  productionSourceMap: false
 };
+
+module.exports = config;

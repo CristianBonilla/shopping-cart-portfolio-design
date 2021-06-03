@@ -1,15 +1,18 @@
 <template>
   <div class="wrapper">
-    <Footer></Footer>
+    <Navbar/>
+    <Footer/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Navbar from '@layout/Navbar.vue';
 import Footer from '@layout/Footer.vue';
 
 @Component({
   components: {
+    Navbar,
     Footer
   }
 })

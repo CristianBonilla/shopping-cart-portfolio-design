@@ -67,7 +67,10 @@ module.exports = {
         '@typescript-eslint/indent': [
           'warn',
           2
-        ]
+        ],
+        'array-bracket-spacing': [ 'warn', 'always' ],
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off'
       }
     }
   ]

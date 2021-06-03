@@ -28,6 +28,9 @@
       ],
       "@plugins/*": [
         "src/plugins/*"
+      ],
+      "@models/*": [
+        "src/models/*"
       ]
     },
     "lib": [
