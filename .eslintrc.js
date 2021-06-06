@@ -20,7 +20,9 @@ module.exports = {
       'warn',
       2
     ],
-    'array-bracket-spacing': [ 'warn', 'always' ]
+    'array-bracket-spacing': [ 'warn', 'always' ],
+    'no-extra-boolean-cast': 'off',
+    'no-unused-expressions': 'error'
   },
   overrides: [
     {
@@ -70,7 +72,16 @@ module.exports = {
         ],
         'array-bracket-spacing': [ 'warn', 'always' ],
         '@typescript-eslint/no-unsafe-return': 'off',
-        '@typescript-eslint/no-unsafe-assignment': 'off'
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unused-vars': [
+          'warn',
+          {
+            argsIgnorePattern: '^_'
+          }
+        ],
+        'no-extra-boolean-cast': 'off',
+        'no-unused-expressions': 'error',
+        // '@typescript-eslint/no-unused-expressions': [ 'warn' ]
       }
     }
   ]

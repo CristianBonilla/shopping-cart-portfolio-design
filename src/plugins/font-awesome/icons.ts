@@ -3,12 +3,12 @@ export {
   faShoppingBag,
   faCartPlus,
   faBars,
-  faAlignRight,
   faArrowLeft,
   faExclamation,
   faCheckCircle,
   faHeart as faHeartS,
-  faStar as faStarS
+  faStar as faStarS,
+  faEllipsisV
 } from '@fortawesome/free-solid-svg-icons';
 
 export {

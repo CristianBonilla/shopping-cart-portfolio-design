@@ -6,7 +6,7 @@ import * as iconPack from '@plugins/font-awesome/icons';
 const VueFontAwesome: PluginObject<Vue> = {
   install(Vue) {
     library.add(iconPack);
-    Vue.component('FontAwesome', FontAwesomeIcon);
+    Vue.component('FontIcon', FontAwesomeIcon);
   }
 };
 

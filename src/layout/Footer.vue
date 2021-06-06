@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="footer__content">
       <p class="footer__description">
-        <strong>&copy;&ensp;Copyright</strong>, {{ year }} All right reserverd
+        <strong>&copy;&ensp;Copyright,</strong> {{ year }} All right reserverd
       </p>
     </div>
   </footer>
