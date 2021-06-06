@@ -27,7 +27,12 @@
       </li>
       <li class="navbar__menu__item">
         <a id="shopping" href="" @click.prevent>
-          <font-icon :icon="[ 'fas', 'shopping-bag' ]" size="lg"></font-icon>
+          <div class="shopping">
+            <font-icon :icon="[ 'fas', 'shopping-bag' ]" size="lg"></font-icon>
+            <div class="shopping__bell">
+              <small>15</small>
+            </div>
+          </div>
         </a>
       </li>
     </ul>
@@ -35,11 +40,10 @@
       <form autocomplete="off" spellcheck="false" class="navbar__search" @submit.prevent>
         <div class="navbar__search__group" :class="{ active: searchFocused }">
           <button type="submit" id="navbar-search"
-            @click="searchFocused = !searchFocused"
-            @blur="searchFocused = false">
+            @click="searchFocus">
             <font-icon :icon="[ 'fas', 'search' ]" size="lg"></font-icon>
           </button>
-          <input type="text" id="navbar-search-field" placeholder="Search..."
+          <input type="text" id="navbar-search-field" placeholder="Search..." ref="search"
             @focus="searchFocused = true"
             @blur="searchFocused = false">
         </div>
@@ -64,17 +68,32 @@ export default class Navbar extends Vue {
     return document.documentElement;
   }
 
-  mounted() {
-    const $navbar = this.$refs.navbar as HTMLElement;
-    const $menu = this.$refs.menu as HTMLUListElement;
-    const $items = [ ...$menu.querySelectorAll('li') ] as HTMLLIElement[];
-    this.activeItem($items);
-    this.scopeActiveItem($navbar, $items);
+  get $navbar() {
+    return this.$refs.navbar as HTMLElement;
   }
 
-  private scopeActiveItem($navbar: HTMLElement, $items: HTMLLIElement[]) {
+  get $menu() {
+    return this.$refs.menu as HTMLUListElement;
+  }
+
+  get $search() {
+    return this.$refs.search as HTMLInputElement;
+  }
+
+  mounted() {
+    const $items = [ ...this.$menu.querySelectorAll('li') ] as HTMLLIElement[];
+    this.activeItem($items);
+    this.scopeActiveItem($items);
+  }
+
+  searchFocus() {
+    this.$search.focus();
+    this.searchFocused = true;
+  }
+
+  private scopeActiveItem($items: HTMLLIElement[]) {
     this.$html.addEventListener('click', ({ target }) => {
-      if (!$navbar.contains(target as HTMLElement)) {
+      if (!this.$navbar.contains(target as HTMLElement)) {
         this.removeActiveItemClass($items);
       }
     });
