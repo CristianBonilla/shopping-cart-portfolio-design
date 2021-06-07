@@ -31,6 +31,9 @@
       ],
       "@models/*": [
         "src/models/*"
+      ],
+      "@mixins/*": [
+        "src/mixins/*"
       ]
     },
     "lib": [

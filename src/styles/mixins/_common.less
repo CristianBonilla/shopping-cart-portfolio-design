@@ -1,0 +1,30 @@
+.animation(@rules: { }, @repeat: 1, @isLoop: false) {
+  animation-fill-mode: both;
+  animation-duration: 1s;
+  animation-delay: 0s;
+  animation-iteration-count: if(@isLoop = true, infinite, @repeat);
+
+  @rules();
+
+  @media (print), (prefers-reduced-motion: reduce) {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+.height-toggle(@rules: { }) {
+
+  &:not(.show) {
+    display: none;
+  }
+
+  &.toggle {
+    position: relative;
+    overflow: hidden;
+    height: 0;
+    transition: height 400ms ease-in-out;
+  }
+
+  @rules();
+}

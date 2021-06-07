@@ -22,7 +22,12 @@ module.exports = {
     ],
     'array-bracket-spacing': [ 'warn', 'always' ],
     'no-extra-boolean-cast': 'off',
-    'no-unused-expressions': 'error'
+    'no-unused-expressions': 'error',
+    'template-curly-spacing': [
+      'error',
+      'always'
+    ],
+    'no-return-assign': 'off'
   },
   overrides: [
     {
@@ -73,6 +78,7 @@ module.exports = {
         'array-bracket-spacing': [ 'warn', 'always' ],
         '@typescript-eslint/no-unsafe-return': 'off',
         '@typescript-eslint/no-unsafe-assignment': 'off',
+        'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': [
           'warn',
           {
@@ -81,7 +87,13 @@ module.exports = {
         ],
         'no-extra-boolean-cast': 'off',
         'no-unused-expressions': 'error',
-        // '@typescript-eslint/no-unused-expressions': [ 'warn' ]
+        // '@typescript-eslint/no-unused-expressions': [ 'warn' ],
+        'template-curly-spacing': [
+          'error',
+          'always'
+        ],
+        'no-return-assign': 'off',
+        '@typescript-eslint/no-explicit-any': 'off'
       }
     }
   ]

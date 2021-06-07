@@ -7,7 +7,8 @@
       <strong>Shopping</strong>
     </router-link>
     <div class="navbar__toggle__content">
-      <button type="button" id="navbar-menu-toggle" class="navbar__toggle__search">
+      <button type="button" id="navbar-menu-toggle" class="navbar__toggle__menu"
+        @click.prevent="menuToggle()">
         <font-icon :icon="[ 'fas', 'ellipsis-v' ]"></font-icon>
       </button>
       <button type="button" id="navbar-toggle" class="navbar__toggle">
@@ -16,7 +17,7 @@
     </div>
     <ul class="navbar__menu" ref="menu">
       <li class="navbar__menu__item navbar__menu__search">
-        <a id="search" href="" @click.prevent>
+        <a id="search" href="" @click.prevent="searchToggle()">
           <font-icon :icon="[ 'fas', 'search' ]" size="lg"></font-icon>
         </a>
       </li>
@@ -30,20 +31,19 @@
           <div class="shopping">
             <font-icon :icon="[ 'fas', 'shopping-bag' ]" size="lg"></font-icon>
             <div class="shopping__bell">
-              <small>15</small>
+              <small>{{ pending }}</small>
             </div>
           </div>
         </a>
       </li>
     </ul>
-    <div class="navbar__search__content">
-      <form autocomplete="off" spellcheck="false" class="navbar__search" @submit.prevent>
+    <div class="navbar__search__content" ref="search">
+      <form autocomplete="off" spellcheck="false" class="navbar__search" @submit.prevent="searchFocus">
         <div class="navbar__search__group" :class="{ active: searchFocused }">
-          <button type="submit" id="navbar-search"
-            @click="searchFocus">
+          <button type="submit" id="navbar-search">
             <font-icon :icon="[ 'fas', 'search' ]" size="lg"></font-icon>
           </button>
-          <input type="text" id="navbar-search-field" placeholder="Search..." ref="search"
+          <input type="text" id="navbar-search-field" placeholder="Search..." ref="searchInput"
             @focus="searchFocused = true"
             @blur="searchFocused = false">
         </div>
@@ -53,63 +53,47 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
 import { APP_ROUTES } from '@models/routes';
+import { NavbarToggle } from '@mixins/navbar-toggle';
 
 const { HOME: ROUTES } = APP_ROUTES;
 
 @Component
-export default class Navbar extends Vue {
+export default class Navbar extends mixins(NavbarToggle) {
   readonly ROUTES = ROUTES;
   favorite = false;
   searchFocused = false;
-
-  get $html() {
-    return document.documentElement;
-  }
-
-  get $navbar() {
-    return this.$refs.navbar as HTMLElement;
-  }
-
-  get $menu() {
-    return this.$refs.menu as HTMLUListElement;
-  }
-
-  get $search() {
-    return this.$refs.search as HTMLInputElement;
-  }
+  pending = '99+';
 
   mounted() {
-    const $items = [ ...this.$menu.querySelectorAll('li') ] as HTMLLIElement[];
-    this.activeItem($items);
-    this.scopeActiveItem($items);
+    const $html = document.documentElement;
+    $html.addEventListener('click', ({ target }) => {
+      if (!this.navbarContains(target as HTMLElement)) {
+        this.removeActiveItemClass();
+      }
+      this.navbarScope(target as HTMLElement);
+    });
+    this.activeItem();
   }
 
   searchFocus() {
-    this.$search.focus();
+    this.search.$input.focus();
     this.searchFocused = true;
   }
 
-  private scopeActiveItem($items: HTMLLIElement[]) {
-    this.$html.addEventListener('click', ({ target }) => {
-      if (!this.$navbar.contains(target as HTMLElement)) {
-        this.removeActiveItemClass($items);
-      }
-    });
-  }
-
-  private activeItem($items: HTMLLIElement[]) {
-    for (const $item of $items) {
+  private activeItem() {
+    for (const $item of this.menu.$items) {
       $item.addEventListener('click', _ => {
-        this.removeActiveItemClass($items);
+        this.removeActiveItemClass();
         $item.classList.add('active');
       });
     }
   }
 
-  private removeActiveItemClass($items: HTMLLIElement[]) {
-    $items.filter($item => $item.classList.remove('active'));
+  private removeActiveItemClass() {
+    this.menu.$items.filter($item => $item.classList.remove('active'));
   }
 }
 </script>

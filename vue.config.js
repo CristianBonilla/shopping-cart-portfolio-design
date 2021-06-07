@@ -59,6 +59,16 @@ const config = {
   css: {
     sourceMap: true
   },
+  pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [
+        path.resolve(paths.src, 'styles/_variables.less'),
+        path.resolve(paths.src, 'styles/mixins/*.less'),
+        path.resolve(paths.src, 'styles/base/_animations.less')
+      ]
+    }
+  },
   productionSourceMap: false
 };
 
