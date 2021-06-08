@@ -97,3 +97,24 @@ export default class Navbar extends mixins(NavbarToggle) {
   }
 }
 </script>
+
+<style lang="less">
+.slide {
+
+  &__vertical-enter-active {
+    .animation({ animation-name: slideOutDown; });
+  }
+
+  &__vertical-leave-active {
+    .animation({ animation-name: slideOutUp; });
+  }
+
+  &__horizontal-enter-active {
+    .animation({ animation-name: slideOutRight; });
+  }
+
+  &__horizontal-leave-active {
+    .animation({ animation-name: slideOutLeft; });
+  }
+}
+</style>

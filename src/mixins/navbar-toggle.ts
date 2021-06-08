@@ -8,6 +8,9 @@ import {
 
 @Component
 export class NavbarToggle extends Vue {
+  private readonly resetMenuMQ = window.matchMedia('(min-width: 321px) and (max-width: 575px)');
+  private readonly resetSearchMQ = window.matchMedia('(min-width: 576px)');
+
   get $navbar() {
     return this.$refs.navbar as HTMLElement;
   }
@@ -32,6 +35,17 @@ export class NavbarToggle extends Vue {
 
   mounted() {
     this.menu.$items = [ ...this.menu.$el.querySelectorAll('li') ] as HTMLLIElement[];
+    this.resetMenuMQ.addEventListener('change', ({ matches }) => {
+      if (matches) {
+        this.reset(this.menu);
+      }
+      this.hideSearch();
+    });
+    this.resetSearchMQ.addEventListener('change', ({ matches }) => {
+      if (matches) {
+        this.reset(this.search);
+      }
+    });
   }
 
   navbarContains($el: HTMLElement) {
@@ -42,20 +56,14 @@ export class NavbarToggle extends Vue {
     if (this.navbarContains($el)) {
       return;
     }
-    if (this.hasToggleClasses(this.menu.$el)) {
-      this.hide(this.menu);
-    }
-    if (this.hasToggleClasses(this.search.$el)) {
-      this.hide(this.search);
-    }
+    this.hideMenu();
+    this.hideSearch();
   }
 
   menuToggle() {
     this.toggle(this.menu);
     if (!this.menu.show && this.search.show) {
-      if (this.hasToggleClasses(this.search.$el)) {
-        this.hide(this.search);
-      }
+      this.hideSearch();
     }
   }
 
@@ -80,6 +88,18 @@ export class NavbarToggle extends Vue {
     setTimeout(() => $el.style.height = `${ ref.height }px`, 10);
   }
 
+  private hideMenu() {
+    if (this.hasToggleClasses(this.menu.$el)) {
+      this.hide(this.menu);
+    }
+  }
+
+  private hideSearch() {
+    if (this.hasToggleClasses(this.search.$el)) {
+      this.hide(this.search);
+    }
+  }
+
   private hide(ref: AnyElementRef) {
     const { $el } = ref;
     ref.show = false;
@@ -88,6 +108,13 @@ export class NavbarToggle extends Vue {
     $el.addEventListener('transitionend', _ => {
       $el.classList.remove('toggle', 'show');
     }, { once: true });
+  }
+
+  private reset(ref: AnyElementRef) {
+    const { $el } = ref;
+    ref.height = 0;
+    $el.style.height = '';
+    $el.classList.remove('toggle', 'show');
   }
 
   private hasToggleClasses($el: HTMLElement) {
