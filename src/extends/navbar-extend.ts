@@ -7,7 +7,7 @@ import {
 } from '@models/navbar-elements-ref';
 
 @Component
-export class NavbarToggle extends Vue {
+export class NavbarExtend extends Vue {
   get $navbar() {
     return this.$refs.navbar as HTMLElement;
   }
@@ -17,7 +17,10 @@ export class NavbarToggle extends Vue {
       show: false,
       height: 0,
       $el: this.$refs.menu as HTMLUListElement,
-      $items: []
+      $items: [],
+      removeActiveItemClass() {
+        this.$items.filter($item => $item.classList.remove('active'));
+      }
     };
   }
 
@@ -28,18 +31,6 @@ export class NavbarToggle extends Vue {
       $el: this.$refs.search as HTMLDivElement,
       $input: this.$refs.searchInput as HTMLInputElement
     };
-  }
-
-  navbarContains($el: HTMLElement) {
-    return this.$navbar.contains($el);
-  }
-
-  navbarScope($el: HTMLElement) {
-    if (this.navbarContains($el)) {
-      return;
-    }
-    this.hideMenu();
-    this.hideSearch();
   }
 
   menuToggle() {
@@ -78,6 +69,27 @@ export class NavbarToggle extends Vue {
     });
   }
 
+  navbarScope() {
+    const $html = document.documentElement;
+    $html.addEventListener('click', ({ target }) => {
+      if (!this.$navbar.contains(target as HTMLElement)) {
+        this.menu.removeActiveItemClass();
+        this.hideMenu();
+        this.hideSearch();
+      }
+    });
+    this.activeItem();
+  }
+
+  private activeItem() {
+    for (const $item of this.menu.$items) {
+      $item.addEventListener('click', _ => {
+        this.menu.removeActiveItemClass();
+        $item.classList.add('active');
+      });
+    }
+  }
+
   private toggle(ref: AnyElementRef) {
     if (this.hasToggleClasses(ref.$el)) {
       this.hide(ref);
@@ -113,6 +125,7 @@ export class NavbarToggle extends Vue {
     ref.height = 0;
     $el.style.height = '';
     $el.addEventListener('transitionend', _ => {
+      this.menu.removeActiveItemClass();
       $el.classList.remove('toggle', 'show');
     }, { once: true });
   }

@@ -58,12 +58,12 @@
 import { Component } from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
 import { APP_ROUTES } from '@models/routes';
-import { NavbarToggle } from '@mixins/navbar-toggle';
+import { NavbarExtend } from '@extends/navbar-extend';
 
 const { HOME: ROUTES } = APP_ROUTES;
 
 @Component
-export default class Navbar extends mixins(NavbarToggle) {
+export default class Navbar extends mixins(NavbarExtend) {
   readonly ROUTES = ROUTES;
   favorite = false;
   searchFocused = false;
@@ -75,36 +75,12 @@ export default class Navbar extends mixins(NavbarToggle) {
     await this.$nextTick();
     this.updateMenuItems();
     this.mediaQueryChangeEvents();
-    this.navbarHtmlScope();
+    this.navbarScope();
   }
 
   searchFocus() {
     this.search.$input.focus();
     this.searchFocused = true;
-  }
-
-  private navbarHtmlScope() {
-    const $html = document.documentElement;
-    $html.addEventListener('click', ({ target }) => {
-      if (!this.navbarContains(target as HTMLElement)) {
-        this.removeActiveItemClass();
-      }
-      this.navbarScope(target as HTMLElement);
-    });
-    this.activeItem();
-  }
-
-  private activeItem() {
-    for (const $item of this.menu.$items) {
-      $item.addEventListener('click', _ => {
-        this.removeActiveItemClass();
-        $item.classList.add('active');
-      });
-    }
-  }
-
-  private removeActiveItemClass() {
-    this.menu.$items.filter($item => $item.classList.remove('active'));
   }
 }
 </script>
