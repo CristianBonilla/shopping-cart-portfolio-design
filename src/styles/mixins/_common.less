@@ -12,19 +12,3 @@
     animation-iteration-count: 1 !important;
   }
 }
-
-.height-toggle(@rules: { }) {
-
-  &:not(.show) {
-    display: none;
-  }
-
-  &.toggle {
-    position: relative;
-    overflow: hidden;
-    height: 0;
-    transition: height 400ms ease-in-out;
-  }
-
-  @rules();
-}

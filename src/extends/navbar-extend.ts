@@ -60,6 +60,7 @@ export class NavbarExtend extends Vue {
     resetMenuMQ.addEventListener('change', ({ matches }) => {
       if (matches) {
         this.reset(this.menu);
+        this.hideSearch();
       }
     });
     resetSearchMQ.addEventListener('change', ({ matches }) => {
