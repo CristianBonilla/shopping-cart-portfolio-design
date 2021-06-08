@@ -8,9 +8,6 @@ import {
 
 @Component
 export class NavbarToggle extends Vue {
-  private readonly resetMenuMQ = window.matchMedia('(min-width: 321px) and (max-width: 575px)');
-  private readonly resetSearchMQ = window.matchMedia('(min-width: 576px)');
-
   get $navbar() {
     return this.$refs.navbar as HTMLElement;
   }
@@ -31,21 +28,6 @@ export class NavbarToggle extends Vue {
       $el: this.$refs.search as HTMLDivElement,
       $input: this.$refs.searchInput as HTMLInputElement
     };
-  }
-
-  mounted() {
-    this.menu.$items = [ ...this.menu.$el.querySelectorAll('li') ] as HTMLLIElement[];
-    this.resetMenuMQ.addEventListener('change', ({ matches }) => {
-      if (matches) {
-        this.reset(this.menu);
-      }
-      this.hideSearch();
-    });
-    this.resetSearchMQ.addEventListener('change', ({ matches }) => {
-      if (matches) {
-        this.reset(this.search);
-      }
-    });
   }
 
   navbarContains($el: HTMLElement) {
@@ -69,6 +51,31 @@ export class NavbarToggle extends Vue {
 
   searchToggle() {
     this.toggle(this.search);
+  }
+
+  updateMenuItems() {
+    this.menu.$items = [ ...this.menu.$el.querySelectorAll('li') ] as HTMLLIElement[];
+  }
+
+  mediaQueryChangeEvents() {
+    const hideSearchMQ = window.matchMedia('(max-width: 320px)');
+    const resetMenuMQ = window.matchMedia('(min-width: 321px)');
+    const resetSearchMQ = window.matchMedia('(min-width: 576px)');
+    hideSearchMQ.addEventListener('change', ({ matches }) => {
+      if (matches) {
+        this.hideSearch();
+      }
+    });
+    resetMenuMQ.addEventListener('change', ({ matches }) => {
+      if (matches) {
+        this.reset(this.menu);
+      }
+    });
+    resetSearchMQ.addEventListener('change', ({ matches }) => {
+      if (matches) {
+        this.reset(this.search);
+      }
+    });
   }
 
   private toggle(ref: AnyElementRef) {

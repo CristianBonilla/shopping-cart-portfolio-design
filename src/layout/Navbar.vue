@@ -1,55 +1,57 @@
 <template>
-  <nav class="navbar" ref="navbar">
-    <router-link :to="ROUTES.MAIN" id="home-navbar" class="navbar__title">
-      <figure class="navbar__image">
-        <img :src="require('@images/logo.png')" alt="">
-      </figure>
-      <strong>Shopping</strong>
-    </router-link>
-    <div class="navbar__toggle__content">
-      <button type="button" id="navbar-menu-toggle" class="navbar__toggle__menu"
-        @click.prevent="menuToggle()">
-        <font-icon :icon="[ 'fas', 'ellipsis-v' ]"></font-icon>
-      </button>
-      <button type="button" id="navbar-toggle" class="navbar__toggle">
-        <font-icon :icon="[ 'fas', 'bars' ]" size="lg"></font-icon>
-      </button>
-    </div>
-    <ul class="navbar__menu" ref="menu">
-      <li class="navbar__menu__item navbar__menu__search">
-        <a id="search" href="" @click.prevent="searchToggle()">
-          <font-icon :icon="[ 'fas', 'search' ]" size="lg"></font-icon>
-        </a>
-      </li>
-      <li class="navbar__menu__item">
-        <a id="favorite" href="" @click.prevent="favorite = !favorite">
-          <font-icon :icon="favorite ? [ 'fas', 'heart' ] : [ 'far', 'heart' ]" size="lg"></font-icon>
-        </a>
-      </li>
-      <li class="navbar__menu__item">
-        <a id="shopping" href="" @click.prevent>
-          <div class="shopping">
-            <font-icon :icon="[ 'fas', 'shopping-bag' ]" size="lg"></font-icon>
-            <div class="shopping__bell">
-              <small>{{ pending }}</small>
-            </div>
-          </div>
-        </a>
-      </li>
-    </ul>
-    <div class="navbar__search__content" ref="search">
-      <form autocomplete="off" spellcheck="false" class="navbar__search" @submit.prevent="searchFocus">
-        <div class="navbar__search__group" :class="{ active: searchFocused }">
-          <button type="submit" id="navbar-search">
+  <transition name="navbar-slide" enter-active-class="slide__down">
+    <nav v-if="navbarEntry" class="navbar" ref="navbar">
+      <router-link :to="ROUTES.MAIN" id="home-navbar" class="navbar__title">
+        <figure class="navbar__image">
+          <img :src="require('@images/logo.png')" alt="">
+        </figure>
+        <strong>Shopping</strong>
+      </router-link>
+      <div class="navbar__toggle__content">
+        <button type="button" id="navbar-menu-toggle" class="navbar__toggle__menu"
+          @click.prevent="menuToggle()">
+          <font-icon :icon="[ 'fas', 'ellipsis-v' ]"></font-icon>
+        </button>
+        <button type="button" id="navbar-toggle" class="navbar__toggle">
+          <font-icon :icon="[ 'fas', 'bars' ]" size="lg"></font-icon>
+        </button>
+      </div>
+      <ul class="navbar__menu" ref="menu">
+        <li class="navbar__menu__item navbar__menu__search">
+          <a id="search" href="" @click.prevent="searchToggle()">
             <font-icon :icon="[ 'fas', 'search' ]" size="lg"></font-icon>
-          </button>
-          <input type="text" id="navbar-search-field" placeholder="Search..." ref="searchInput"
-            @focus="searchFocused = true"
-            @blur="searchFocused = false">
-        </div>
-      </form>
-    </div>
-  </nav>
+          </a>
+        </li>
+        <li class="navbar__menu__item">
+          <a id="favorite" href="" @click.prevent="favorite = !favorite">
+            <font-icon :icon="favorite ? [ 'fas', 'heart' ] : [ 'far', 'heart' ]" size="lg"></font-icon>
+          </a>
+        </li>
+        <li class="navbar__menu__item">
+          <a id="shopping" href="" @click.prevent>
+            <div class="shopping">
+              <font-icon :icon="[ 'fas', 'shopping-bag' ]" size="lg"></font-icon>
+              <div class="shopping__bell">
+                <small>{{ pending }}</small>
+              </div>
+            </div>
+          </a>
+        </li>
+      </ul>
+      <div class="navbar__search__content" ref="search">
+        <form autocomplete="off" spellcheck="false" class="navbar__search" @submit.prevent="searchFocus">
+          <div class="navbar__search__group" :class="{ active: searchFocused }">
+            <button type="submit" id="navbar-search">
+              <font-icon :icon="[ 'fas', 'search' ]" size="lg"></font-icon>
+            </button>
+            <input type="text" id="navbar-search-field" placeholder="Search..." ref="searchInput"
+              @focus="searchFocused = true"
+              @blur="searchFocused = false">
+          </div>
+        </form>
+      </div>
+    </nav>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -66,8 +68,22 @@ export default class Navbar extends mixins(NavbarToggle) {
   favorite = false;
   searchFocused = false;
   pending = '99+';
+  navbarEntry = false;
 
-  mounted() {
+  async mounted() {
+    this.navbarEntry = true;
+    await this.$nextTick();
+    this.updateMenuItems();
+    this.mediaQueryChangeEvents();
+    this.navbarHtmlScope();
+  }
+
+  searchFocus() {
+    this.search.$input.focus();
+    this.searchFocused = true;
+  }
+
+  private navbarHtmlScope() {
     const $html = document.documentElement;
     $html.addEventListener('click', ({ target }) => {
       if (!this.navbarContains(target as HTMLElement)) {
@@ -76,11 +92,6 @@ export default class Navbar extends mixins(NavbarToggle) {
       this.navbarScope(target as HTMLElement);
     });
     this.activeItem();
-  }
-
-  searchFocus() {
-    this.search.$input.focus();
-    this.searchFocused = true;
   }
 
   private activeItem() {
@@ -101,20 +112,8 @@ export default class Navbar extends mixins(NavbarToggle) {
 <style lang="less">
 .slide {
 
-  &__vertical-enter-active {
-    .animation({ animation-name: slideOutDown; });
-  }
-
-  &__vertical-leave-active {
-    .animation({ animation-name: slideOutUp; });
-  }
-
-  &__horizontal-enter-active {
-    .animation({ animation-name: slideOutRight; });
-  }
-
-  &__horizontal-leave-active {
-    .animation({ animation-name: slideOutLeft; });
+  &__down {
+    .animation({ animation-name: slideInDown; });
   }
 }
 </style>
