@@ -49,18 +49,11 @@ export class NavbarExtend extends Vue {
   }
 
   mediaQueryChangeEvents() {
-    const hideSearchMQ = window.matchMedia('(max-width: 320px)');
     const resetMenuMQ = window.matchMedia('(min-width: 321px)');
     const resetSearchMQ = window.matchMedia('(min-width: 576px)');
-    hideSearchMQ.addEventListener('change', ({ matches }) => {
-      if (matches) {
-        this.hideSearch();
-      }
-    });
     resetMenuMQ.addEventListener('change', ({ matches }) => {
       if (matches) {
         this.reset(this.menu);
-        this.hideSearch();
       }
     });
     resetSearchMQ.addEventListener('change', ({ matches }) => {
@@ -68,6 +61,17 @@ export class NavbarExtend extends Vue {
         this.reset(this.search);
       }
     });
+    const hideSearchMQs = [
+      window.matchMedia('(max-width: 320px)'),
+      window.matchMedia('(min-width: 321px) and (max-width: 575px)')
+    ];
+    for (const mQ of hideSearchMQs) {
+      mQ.addEventListener('change', ({ matches }) => {
+        if (matches) {
+          this.hideSearch();
+        }
+      });
+    }
   }
 
   navbarScope() {
