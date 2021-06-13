@@ -26,9 +26,6 @@
       "@views/*": [
         "src/views/*"
       ],
-      "@plugins/*": [
-        "src/plugins/*"
-      ],
       "@models/*": [
         "src/models/*"
       ],

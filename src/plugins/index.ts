@@ -1,1 +1,1 @@
-export { VueFontAwesome } from '@plugins/font-awesome';
+export { VueFontAwesome } from 'src/plugins/font-awesome';

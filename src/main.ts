@@ -5,10 +5,10 @@ import 'src/plugins';
 
 Vue.config.productionTip = false;
 
-const root$ = document.querySelector('root') as HTMLElement;
+const $root = document.querySelector('root') as HTMLElement;
 const options: ComponentOptions<Vue> = {
   render: rootElement => rootElement(App),
   router
 };
 
-new Vue(options).$mount(root$);
+new Vue(options).$mount($root);
