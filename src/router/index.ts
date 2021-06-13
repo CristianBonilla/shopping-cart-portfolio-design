@@ -1,7 +1,5 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Auth from '@views/Auth.vue';
-import Home from '@views/Home.vue';
 
 declare const process: {
   env: {
@@ -15,12 +13,12 @@ const routes: RouteConfig[] = [
   {
     path: '/auth',
     name: 'Auth',
-    component: Auth
+    component: () => import('@views/Auth.vue')
   },
   {
     path: '/home',
     name: 'Home',
-    component: Home
+    component: () => import('@views/Home.vue')
   },
   {
     path: '*',
